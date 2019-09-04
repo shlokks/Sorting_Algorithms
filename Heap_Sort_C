@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <math.h>
+
+// swap function
+void swap(int *a, int *b) {
+	int c  = *a;
+	*a = *b;
+	*b = c;
+}
+
+// function for heapify
+void max_heapify(int arr[], int i, int size) {
+
+	// initialize the left and right index
+	int left = 2 * i;
+	int right = 2 * i + 1;
+
+	int largest;
+
+	if(left <= size && arr[left] > arr[i]) {
+		largest = left;
+	}
+	else {
+		largest = i;
+	}
+
+	if (right <= size && arr[right] > arr[largest]) {
+		largest = right;
+	}
+	if (largest != i) {
+		swap(&arr[i], &arr[largest]);
+		max_heapify(arr, largest, size);
+	}
+}
+
+
+// function to build the max heap
+void build_max_heap(int arr[], int size) {
+
+	// initialize the vaiables
+	int heap_size = size;
+	int n = floor(size / 2);
+
+	// call max_heapify to build the max heap
+	for(int i = n; i >= 0; i--) {
+		max_heapify(arr, i, heap_size);
+	}
+}
+
+
+// function to sort the heap
+void heapsort(int arr[], int size) {
+	build_max_heap(arr, size);
+
+	for (int i = size; i > 0; i--) {
+		swap(&arr[0], &arr[i]);
+		size = size - 1;
+		max_heapify(arr, 0, size);
+	}
+}
+
+
+// main driver code
+int main(void) {
+
+	// initialize array of size 10
+  	int arr[] = {10, 99, 89, 79};
+  	int n = sizeof(arr) / sizeof(arr[0]);
+
+	// call heapsort function
+  	heapsort(arr, n);
+
+	// display the sorted array
+  	for(int i = 0; i < n; i++) {
+	    printf("%d ", arr[i]);
+  	}
+
+  	return 0;
+}

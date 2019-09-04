@@ -1,0 +1,85 @@
+#include <stdio.h>
+
+// function to merger the sorted arrays
+void merge(int arr[], int left, int mid, int right) {
+	int n1 = mid - left + 1;
+	int n2 = right - mid;
+	
+	int left_arr[n1];
+	int right_arr[n2];
+
+	// create left sorted array
+	for(int i = 0; i < n1; i++) {
+		left_arr[i] = arr[left + i];
+	}
+
+	// create right sorted array
+	for(int j = 0; j < n2; j++) {
+		right_arr[j] = arr[mid + j + 1];
+	}
+
+	int i = 0;
+	int j = 0;
+	int k = left;
+
+	// merge the two array in sorted form
+	while(i < n1 && j < n2) {
+		if(left_arr[i] <= right_arr[j]) {
+			arr[k] = left_arr[i];
+			i++;
+		}
+		else {
+			arr[k] = right_arr[j];
+			j++;
+		}
+		k++;
+	}
+
+	// copy rest of the elements of array left_arr
+	while(i < n1){
+		arr[k] = left_arr[i];
+		i++;
+		k++;
+	}
+
+	// copy rest of the elements of array right_arr
+	while(j < n2) {
+		arr[k] = right_arr[j];
+		j++;
+		k++;
+	}
+}
+
+// recursive merge sort function
+void merge_sort(int arr[], int left, int right) {
+
+	// if the array has atleast two elements
+	if(left < right) {
+
+		// find the middle index
+		int mid = left + (right - left) / 2;
+
+		// right half
+		merge_sort(arr, left, mid);
+
+		// left half
+		merge_sort(arr, mid + 1, right);
+
+		// merge both
+		merge(arr, left, mid, right);
+	}
+}
+
+// main driver function
+int main(void) {
+	int arr[] = {5, 4, 3, 2, 1};
+	int n = sizeof(arr) / sizeof(arr[0]);
+	int left = 0;
+	int right = n - 1;
+
+	merge_sort(arr, left, right);
+
+	for(int i = 0; i < n; i++) {
+		printf("%d ", arr[i]);
+	}
+}
